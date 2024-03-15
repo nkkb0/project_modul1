@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 *.beam
 *.pyc
 *.swp
@@ -14,6 +13,4 @@ bin/configlet.exe
 .pytest_cache
 __pycache__
 .venv
-=======
->>>>>>> 3196bc1219be3bb581145966e46891e11d6082c5
 node_modules
