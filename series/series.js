@@ -5,8 +5,8 @@
 
 export class Series {
   constructor(series) {
-    this.series = series.split('').map(Number);
-    if (series === '') {
+    this.series = series;
+    if (this.series === '') {
       throw new Error('series cannot be empty');
     }
   }
@@ -20,8 +20,16 @@ export class Series {
     } else if (this.series.length < sliceLength) {
       throw new Error('slice length cannot be greater than series length');
     }
+    let counter = 0;
+    let i = Number(sliceLength);
+    this.series = this.series.split('');
+    for (let n = 0; n < this.series.length; n += 1) {
+      this.series[n] = Number(this.series[n]);
+    }
     for (let c = 0; this.series.length - sliceLength >= c; c += 1) {
-      arr.push(this.series.slice(c, c + sliceLength));
+      arr.push(this.series.slice(counter, i));
+      counter += 1;
+      i += 1;
     }
     return arr;
   }
