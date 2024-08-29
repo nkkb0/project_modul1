@@ -12,10 +12,12 @@ export const bestHands = (hands) => {
     k = '';
     total.push(0);
     const r = hands[y].toString();
-    const ruka = r.replace(/[0, ]/g, '');
-    const regex = /[0-9,J,Q,K,A]/;
+    const rukka = r.split('0').join('');
+    const ruka = rukka.split(' ').join('');
     for (let i = 0; i < ruka.length; i += 1) {
-      if (regex.test(ruka[i])) {
+      const chose = ruka[i];
+      if ((chose >= '0' && chose <= '9') || chose === 'A' || chose === 'K'
+    || chose === 'Q' || chose === 'J') {
         n += ruka[i];
       } else { k += ruka[i]; }
     }
@@ -42,12 +44,24 @@ export const bestHands = (hands) => {
     const reg1 = [2, 3, 4, 5, 'A'];
     const reg2 = [1, 'J', 'Q', 'K', 'A'];
     const zz = n;
-    const fleshR = reg2.every((aa) => zz.includes(aa));
-    const stree = reg1.every((bb) => zz.includes(bb));
+    let fleshR = true;
+    for (let i = 0; i < reg2.length; i += 1) {
+      if (!zz.includes(reg2[i])) {
+        fleshR = false;
+        break;
+      }
+    }
+    let stree = true;
+    for (let i = 0; i < reg1.length; i += 1) {
+      if (!zz.includes(reg1[i])) {
+        stree = false;
+        break;
+      }
+    }
     // одинаковая масть
     let skip = false;
-    if (k.match((/S{5}/) || []) || k.match((/D{5}/) || [])
-      || k.match((/C{5}/) || []) || k.match((/H{5}/) || [])) {
+    if (k.includes('SSSSS') || k.includes('DDDDD')
+      || k.includes('CCCCC') || k.includes('HHHHH')) {
       if (fleshR === true) {
         total[y] = 119;
       } else if (stree === true) {
@@ -55,7 +69,13 @@ export const bestHands = (hands) => {
       }
       total[y] += 61;
       for (let i = 8; i > 1; i -= 1) {
-        const included = reg.every((char) => zz.includes(char));
+        let included = true;
+        for (let p = 0; p < reg.length; p += 1) {
+          if (!zz.includes(reg[p])) {
+            included = false;
+            break;
+          }
+        }
         if (included === true) {
           total[y] = 110 + i;
           break;
@@ -69,11 +89,17 @@ export const bestHands = (hands) => {
     if (!skip) {
       // одинаковая масть
       // последовательность карт
-      if (!(k.match((/S{5}/) || [])) || !(k.match((/D{5}/) || []))
-      || !(k.match((/C{5}/) || [])) || !(k.match((/H{5}/) || []))) {
+      if (!(k.includes('SSSSS') || k.includes('DDDDD')
+        || k.includes('CCCCC') || k.includes('HHHHH'))) {
         for (let i = 8; i > 0; i -= 1) {
           const z = n;
-          const included = reg.every((char) => z.includes(char));
+          let included = true;
+          for (let p = 0; p < reg.length; p += 1) {
+            if (!z.includes(reg[p])) {
+              included = false;
+              break;
+            }
+          }
           if (included === true) {
             total[y] = 54 + i;
             break;
